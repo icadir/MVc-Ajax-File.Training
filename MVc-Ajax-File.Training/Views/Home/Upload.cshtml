@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Upload";
+}
+
+<style>
+    .bar {
+        background-color: #0094ff;
+        height: 40px;
+    }
+
+    #fileList {
+        padding: 20px 10px 1px 10px;
+        background-color: #9DA8B6;
+    }
+
+    #fileupload {
+        display: inline-block;
+    }
+</style>
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+<script src="~/Scripts/jquery.iframe-transport.js"></script>
+
+<div class="row" style="margin-top: 15px;">
+    <button id="btnUpload" class="btn btn-success">Dosyaları Yükle</button>
+    <input id="fileupload" type="file" multiple="multiple" />
+    <h5>Dosyaların Yüklenmesi</h5>
+    <div class="progress">
+        <div id="overBar" class="bar" style="width: 10%;">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div id="fileList" class="hidden">
+        <div class="progress">
+            <div id="overBar" class="bar" style="width: 20%;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#fileupload').fileupload({
+        dataType: "json",
+        url: "/home/FileUpload",
+        limitConCurrentUploads: 1,
+        sequentialUploads: true,
+        progressInterval: 100,
+        maxChunkSize: 10000,
+        add: function (e, data) {
+            $("#btnUpload").click(function() {
+                data.submit();
+            });
+        },
+        done: function (e, data) {
+
+        },
+        progressAll: function (e, data) {
+
+        },
+        progress: function (e, data) {
+
+        }
+
+    });
+</script>
