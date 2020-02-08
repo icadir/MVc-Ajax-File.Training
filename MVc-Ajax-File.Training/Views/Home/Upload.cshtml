@@ -10,7 +10,7 @@
     }
 
     #fileList {
-        padding: 20px 10px 1px 10px;
+        padding: 5px 10px 1px 10px;
         background-color: #9DA8B6;
     }
 
@@ -22,12 +22,12 @@
 <script src="~/Scripts/jquery.fileupload.js"></script>
 <script src="~/Scripts/jquery.iframe-transport.js"></script>
 
-<div class="row" style="margin-top: 15px;">
+<div class="row" style="margin-top: 15px; padding: 5px; background-color: #ccc; margin-bottom: 5px;">
     <button id="btnUpload" class="btn btn-success">Dosyaları Yükle</button>
     <input id="fileupload" type="file" multiple="multiple" />
-    <h5>Dosyaların Yüklenmesi</h5>
-    <div class="progress">
-        <div id="overBar" class="bar" style="width: 10%;">
+    <h5>Tüm Dosyaların İlerleyişi</h5>
+    <div class="progress" style ="margin-bottom: 5px;">
+        <div id="overBar" class="bar" style="width: 0%;">
         </div>
     </div>
 </div>
@@ -42,6 +42,7 @@
 </div>
 
 <script>
+    var barCount = 1;
     $('#fileupload').fileupload({
         dataType: "json",
         url: "/home/FileUpload",
@@ -51,21 +52,24 @@
         maxChunkSize: 10000,
         add: function (e, data) {
             $("#btnUpload").removeClass("hidden");
-            $('#fileList').append("<h5>Dosya Adi" + data.files[0].name  + "</h5>");
+            $('#fileList').append("<h5>Dosya Adi" + data.files[0].name + "</h5>");
             $('#fileList').append("<h5> Dosya Boyutu" + bytesToSize(data.files[0].size, 2) + "</h5>");
-            $('#fileList').append('<div class="progress"><div class="bar" style="width:0%;"></div></div>');
+            $('#fileList')
+                .append('<div class="progress"><div id="uploadingFile" class="bar" style="width:0%;"></div></div>');
             $("#btnUpload").click(function () {
                 data.submit();
             });
         },
         done: function (e, data) {
-
+            barCount++;
         },
-        progressAll: function (e, data) {
-
+        progressall: function (e, data) {
+            var yuzde = parseInt(data.loaded / data.total * 100);
+            $("#overBar").css("width", yuzde + "%");
         },
         progress: function (e, data) {
-
+            var yuzde = parseInt(data.loaded / data.total * 100);
+            $(".bar:eq(" + barCount + ")").css("width", yuzde + '%');
         }
 
     });
