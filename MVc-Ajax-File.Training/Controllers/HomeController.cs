@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MVc_Ajax_File.Training.Models;
+using MVc_Ajax_File.Training.Utilities;
 using WebGrease.Css.Extensions;
 
 namespace MVc_Ajax_File.Training.Controllers
@@ -36,7 +37,7 @@ namespace MVc_Ajax_File.Training.Controllers
                 if (Session["value"] == null)
                     Session["value"] = value;
                 else
-                    Session["value"] = ByteBirlestir((byte[])Session["value"], value);
+                    Session["value"] = UtilityManager.ByteBirlestir((byte[])Session["value"], value);
 
                 if (10000 > file.ContentLength)
                 {
@@ -57,12 +58,6 @@ namespace MVc_Ajax_File.Training.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
-        static byte[] ByteBirlestir(byte[] arrayA, byte[] arrayB)
-        {
-            byte[] outputBytes = new byte[arrayA.Length + arrayB.Length];
-            Buffer.BlockCopy(arrayA, 0, outputBytes, 0, arrayA.Length);
-            Buffer.BlockCopy(arrayB, 0, outputBytes, arrayA.Length, arrayB.Length);
-            return outputBytes;
-        }
+
     }
 }
